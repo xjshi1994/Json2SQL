@@ -6,4 +6,7 @@
 * json : ![](https://github.com/xjshi1994/picture_warehouse/blob/master/Json2SQL/orignal_json.png)
 * result: ![](https://github.com/xjshi1994/picture_warehouse/blob/master/Json2SQL/Json2SQL_sample.png)
 
+## TODO
+* Because this program cannot handle with the null, or bad format json such as different entry number in the same level array. So the idea is to make a data clean module to format the json and create schema according to the whole jsons. Then sending formatted jsons to the json2sql module.
+
 
