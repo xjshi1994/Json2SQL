@@ -22,9 +22,9 @@ public class UtilTools {
         return str.replaceAll("\\[|\\]", "");
     }
 
-    public static String getPreForKey(String str) throws Exception {
+    public static String getPreForKey(String str) {
         if (str.equals(removeLast(str))) {
-            throw new Exception();
+            return "base";
         }
         return removeBracket(removeLast(str));
     }
@@ -46,7 +46,7 @@ public class UtilTools {
             return entryKey + "." + thirdEntryKey;
         }
     }
-    public String removeLastCommma(String str) {
+    public static String removeLastCommma(String str) {
         return str.substring(0, str.length() - 1);
     }
 }

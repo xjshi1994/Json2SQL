@@ -1,15 +1,4 @@
 package com.bkjk.db;
-
-import com.github.wnameless.json.flattener.JsonFlattener;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 public class TestJson2SQL {
 
     public static void main(String[] args) {
@@ -40,7 +29,7 @@ public class TestJson2SQL {
 
             Json2SQL json2SQL = new Json2SQL(json1);
             // variable table name
-            json2SQL.getSQL("xixi");
+             json2SQL.getSQL("xixi");
 
     }
 }

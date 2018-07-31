@@ -1,26 +1,24 @@
 package com.bkjk.db;
 
 import com.github.wnameless.json.flattener.JsonFlattener;
-import java.io.*;
+
 import java.util.*;
 
 public class Json2SQL {
     private int totalRow = 0;
-    private final UtilTools utilTools;
-    private final Map<String, Map<String, Map<String, Object>>> grouped;
-    private final Map<String, List<Object>> dataframe;
+    private final String json;
 
 
     public Json2SQL(String json) {
-        Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(json);
-        utilTools = new UtilTools();
-        grouped = getThreeMap(flattenJson);
-        dataframe = insertData(grouped);
+        this.json = json;
     }
 
     public void getSQL(String tableName) {
+        Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(json);
+        Map<String, Map<String, Map<String, Object>>> grouped = getThreeMap(flattenJson);
+        Map<String, List<Object>> dataframe = insertData(grouped);
         SQLGenerator sqlGenerator = new SQLGenerator(totalRow);
-        System.out.println(sqlGenerator.getFinalSQL(dataframe,tableName));
+        System.out.println(sqlGenerator.getFinalSQL(dataframe, tableName));
     }
 
     // step 1
@@ -29,78 +27,82 @@ public class Json2SQL {
 
         for (Map.Entry<String, Object> entry : flattenJson.entrySet()) {
             String firstKey = null;
-            try {
-                firstKey = utilTools.getPreForKey(entry.getKey());
-            } catch (Exception e) {
-                firstKey = "base";
-            }
-            if (!grouped.containsKey(firstKey)) {
-                grouped.put(firstKey, new HashMap<>());
-            }
+
+            firstKey = UtilTools.getPreForKey(entry.getKey());
+
+            grouped.putIfAbsent(firstKey, new HashMap<>());
 
             // second level map
             Map<String, Map<String, Object>> secondMap = grouped.get(firstKey);
-            String secondKey = utilTools.removeLast(entry.getKey());
-
-            if (!secondMap.containsKey(secondKey)) {
-                secondMap.put(secondKey, new HashMap<>());
-            }
+            String secondKey = UtilTools.removeLast(entry.getKey());
+            secondMap.putIfAbsent(secondKey, new HashMap<>());
 
             // third level map
-            String thirdKey = utilTools.getLastField(entry.getKey());
+            String thirdKey = UtilTools.getLastField(entry.getKey());
             Map<String, Object> thirdMap = secondMap.get(secondKey);
             thirdMap.put(thirdKey, entry.getValue());
         }
 
-        // after get three map, we can get totalRows.
+        // after get three map, calculate totalRows.
         getTotalRows(grouped);
         return grouped;
     }
 
     public void getTotalRows(Map<String, Map<String, Map<String, Object>>> group) {
         List<String> list = new ArrayList<>();
+        // add to list except base.
         for (Map.Entry<String, Map<String, Map<String, Object>>> entry : group.entrySet()) {
             if (!entry.getKey().equals("base")) {
                 list.add(entry.getKey());
             }
         }
+
+        // sort list
         Collections.sort(list);
+
         int num = 0;
         String prev = "";
         String cur = "";
         List<Integer> numList = new LinkedList<>();
+
+        // start from last
         for (int i = list.size() - 1; i >= 0; i--) {
+            // assume the first is the last level
             cur = list.get(i);
-            if (utilTools.removeLast(prev).equals(cur)) {
+
+            // skip the entry with the same root
+            if (UtilTools.removeLast(prev).equals(cur)) {
                 prev = cur;
                 continue;
             } else {
+                // when meet with the different root, add the size of the to the numlist
                 num = group.get(cur).size();
                 numList.add(num);
             }
             prev = cur;
         }
+
         int result = 1;
         for (int i = 0; i < numList.size(); i++) {
             result = result * numList.get(i);
         }
+
         totalRow = result;
     }
 
-    // calculate the deepest, group them to get subResult, get finalmap
+    // calculate the deepest, group them to get subResult, then get final map
     public Map<String, List<Object>> insertData(Map<String, Map<String, Map<String, Object>>> group) {
         List<Map<String, List<Object>>> subResult = new LinkedList<>();
 
-        Map<String, List<Object>> result = new HashMap<>();
-
         List<String> deepest = getDeepest(group);
-        // for every deepest key to add the subResult;
+
+        // for every deepest key,  chain the all its parent, then add to the subResult;
         for (String str : deepest) {
             if (getSubMap(str, group) != null) {
                 subResult.add(getSubMap(str, group));
             }
         }
-        result = getFinalMap(subResult, group);
+        Map<String, List<Object>> result = getFinalMap(subResult, group);
         return result;
     }
 
@@ -113,7 +115,7 @@ public class Json2SQL {
             for (Map.Entry<String, Map<String, Object>> secondEntry : secondMap.entrySet()) {
                 Map<String, Object> thirdMap = secondEntry.getValue();
                 for (Map.Entry<String, Object> thirdEntry : thirdMap.entrySet()) {
-                    String column = utilTools.getColumn("base", thirdEntry.getKey());
+                    String column = UtilTools.getColumn("base", thirdEntry.getKey());
                     List<Object> sublist = new ArrayList<>();
                     for (int i = 0; i < totalRow; i++) {
                         sublist.add(thirdEntry.getValue());
@@ -127,7 +129,7 @@ public class Json2SQL {
         for (Map<String, List<Object>> map : subResult) {
             // revise
             int initSize = 0;
-            for(List<Object> l: map.values()) {
+            for (List<Object> l : map.values()) {
                 initSize = l.size();
             }
             wholeLevel = totalRow / (partLevel * initSize);
@@ -141,10 +143,8 @@ public class Json2SQL {
         for (Map.Entry<String, List<Object>> entry : map.entrySet()) {
             String smallMapKey = entry.getKey();
             List<Object> smallMapList = entry.getValue();
-            if (!finalMap.containsKey(smallMapKey)) {
-                List<Object> list = new LinkedList<>();
-                finalMap.put(smallMapKey, list);
-            }
+
+            finalMap.putIfAbsent(smallMapKey, new LinkedList<>());
 
             // partLevel finished
             for (Object o : smallMapList) {
@@ -160,12 +160,14 @@ public class Json2SQL {
         }
     }
 
+
     public Map<String, List<Object>> getSubMap(String key1, Map<String, Map<String, Map<String, Object>>> group) {
         Map<String, List<Object>> subMap = new HashMap<>();
-        // todo base
+        // base
         if (key1.equals("base")) {
             return null;
         }
+
         Map<String, Map<String, Object>> secondMap = group.get(key1);
         for (Map.Entry<String, Map<String, Object>> secondEntry : secondMap.entrySet()) {
             String curKey = secondEntry.getKey();
@@ -175,18 +177,16 @@ public class Json2SQL {
                     System.out.println("third map is null");
                     return null;
                 }
+
                 for (Map.Entry<String, Object> thirdEntry : thirdMap.entrySet()) {
-                    String column = utilTools.getColumn(utilTools.removeBracket(curKey), thirdEntry.getKey());
-                    if (!subMap.containsKey(column)) {
-                        List<Object> subList = new LinkedList<>();
-                        subList.add(thirdEntry.getValue());
-                        subMap.put(column, subList);
-                    } else {
-                        subMap.get(column).add(thirdEntry.getValue());
-                    }
+                    String column = UtilTools.getColumn(UtilTools.removeBracket(curKey), thirdEntry.getKey());
+                    subMap.putIfAbsent(column, new LinkedList<>());
+                    subMap.get(column).add(thirdEntry.getValue());
                 }
+
+                // get all its parent from bottom
                 if (curKey.contains(".")) {
-                    curKey = utilTools.removeLast(curKey);
+                    curKey = UtilTools.removeLast(curKey);
                 } else {
                     curKey = null;
                 }
@@ -196,7 +196,7 @@ public class Json2SQL {
     }
 
     public Map<String, Object> getThirdMap(String secondKey, Map<String, Map<String, Map<String, Object>>> group) {
-        String firstKey = utilTools.removeBracket(secondKey);
+        String firstKey = UtilTools.removeBracket(secondKey);
         return group.get(firstKey).get(secondKey);
     }
 
@@ -214,7 +214,7 @@ public class Json2SQL {
 
         for (int i = list.size() - 1; i >= 0; i--) {
             String cur = list.get(i);
-            if (!utilTools.removeLast(pre).equals(cur)) {
+            if (!UtilTools.removeLast(pre).equals(cur)) {
                 deepest.add(cur);
             }
             pre = cur;
@@ -239,11 +239,4 @@ public class Json2SQL {
         }
     }
 
-    public int getTotalRow() {
-        return totalRow;
-    }
-
-    public void setTotalRow(int totalRow) {
-        this.totalRow = totalRow;
-    }
 }
