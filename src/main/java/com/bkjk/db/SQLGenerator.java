@@ -78,7 +78,9 @@ public class SQLGenerator {
         // detect null array
         for (List<Object> l : finalDataframe.values()) {
             if (l.size() < totalRow) {
-                throw new RuntimeException("null array");
+                System.out.println(l);
+                System.out.println(totalRow);
+                throw new RuntimeException("null array or array with different field name");
             }
         }
 

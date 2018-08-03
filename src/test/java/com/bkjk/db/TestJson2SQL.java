@@ -6,7 +6,42 @@ import org.junit.Test;
 public class TestJson2SQL {
     @Test
     public void testCreate() {
-        String json1 = "{\"asyncTaskId\":null,\"cellphone\":\"18595746721\",\"message\":\"查询成功\",\"name\":\"王鹏\",\"resultDesc\":[{\"hitDetailId\":\"5b434d803603a7000138eb6f\",\"reportTime\":\"2018-07-09 19:56:48\",\"rules\":[{\"count\":0,\"detail\":\"未命中羊毛党名单\",\"name\":\"命中羊毛党名单\",\"result\":false,\"ruleId\":\"pycredit_econnoisserur_state\",\"score\":null},{\"count\":0,\"detail\":\"未命中欺诈风险名单\",\"name\":\"命中欺诈风险名单\",\"result\":false,\"ruleId\":\"pycredit_fraudRisk_state\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_未知总笔数:0\",\"name\":\"信贷行为_未知总笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_undefinedCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_近12个月贷款放款笔数:0\",\"name\":\"信贷行为_近12个月贷款放款笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_last12MthsLoanCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_贷款总笔数:0\",\"name\":\"信贷行为_贷款总笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_loanOrderCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_未结清笔数:0\",\"name\":\"信贷行为_未结清笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_loanNoClosedCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_已结清笔数:0\",\"name\":\"信贷行为_已结清笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_loanClosedCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_近1个月贷款放款笔数:0\",\"name\":\"信贷行为_近1个月贷款放款笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_last1MthsLoanCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_贷款机构总数:0\",\"name\":\"信贷行为_贷款机构总数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_loanOrgCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_近3个月贷款放款笔数:0\",\"name\":\"信贷行为_近3个月贷款放款笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_last3MthsLoanCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_近6个月贷款放款笔数:0\",\"name\":\"信贷行为_近6个月贷款放款笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_last6MthsLoanCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_平均放款额度:0\",\"name\":\"信贷行为_平均放款额度\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_avgCredits\",\"score\":null},{\"count\":2,\"detail\":\"近两年历史查询记录_近1个月各单位类型查询记录总数:2\",\"name\":\"近两年历史查询记录_近1个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last1Month\",\"score\":null},{\"count\":4,\"detail\":\"近两年历史查询记录_近24个月各单位类型查询记录总数:4\",\"name\":\"近两年历史查询记录_近24个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last24Month\",\"score\":null},{\"count\":2,\"detail\":\"近两年历史查询记录_近3个月各单位类型查询记录总数:2\",\"name\":\"近两年历史查询记录_近3个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last3Month\",\"score\":null},{\"count\":4,\"detail\":\"近两年历史查询记录_近12个月各单位类型查询记录总数:4\",\"name\":\"近两年历史查询记录_近12个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last12Month\",\"score\":null},{\"count\":3,\"detail\":\"近两年历史查询记录_近6个月各单位类型查询记录总数:3\",\"name\":\"近两年历史查询记录_近6个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last6Month\",\"score\":null},{\"count\":4,\"detail\":\"近两年历史查询记录_近18个月各单位类型查询记录总数:4\",\"name\":\"近两年历史查询记录_近18个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last18Month\",\"score\":null},{\"count\":0,\"detail\":\"近两年历史查询记录_疑似多头记录:0\",\"name\":\"近两年历史查询记录_疑似多头记录\",\"result\":false,\"ruleId\":\"pycredit_suspectedBulllending_appplyCnt\",\"score\":null}],\"score\":20,\"source\":\"PYCREDIT\",\"sourceName\":\"鹏元\",\"suggest\":\"建议通过\"},{\"hitDetailId\":\"5b434d7f7bca2c000164e35e\",\"reportTime\":\"2018-07-09 19:56:47\",\"rules\":[{\"count\":2,\"detail\":\"3个月身份证关联手机号数：2\",\"name\":\"3个月内身份证关联多个申请信息\",\"result\":true,\"ruleId\":\"ssn_bind_multiple_apply_info_in3m\",\"score\":6},{\"count\":3,\"detail\":\"一般消费分期平台;大型消费金融公司;综合类电商平台\",\"name\":\"1个月内申请人在多个平台申请借款\",\"result\":true,\"ruleId\":\"applicant_applied_loan_on_multiple_platforms_in1m\",\"score\":6},{\"count\":4,\"detail\":\"一般消费分期平台;大型消费金融公司;O2O;综合类电商平台\",\"name\":\"3个月内申请人在多个平台申请借款\",\"result\":true,\"ruleId\":\"applicant_applied_loan_on_multiple_platforms_in3m\",\"score\":4},{\"count\":1,\"detail\":\"异常借款\",\"name\":\"申请人信息命中低风险关注名单\",\"result\":true,\"ruleId\":null,\"score\":2}],\"score\":18,\"source\":\"TONGDUN\",\"sourceName\":\"同盾\",\"suggest\":\"建议通过\"}],\"source\":[\"PYCREDIT\",\"TONGDUN\"],\"ssn\":\"411123199603149532\",\"status\":\"OK\"}";
+        String json1 = "{\n" +
+                "  \"kind\": \"youtube#searchListResponse\",\n" +
+                "  \"etag\": \"\\\"m2yskBQFythfE4irbTIeOgYYfBU/PaiEDiVxOyCWelLPuuwa9LKz3Gk\\\"\",\n" +
+                "  \"nextPageToken\": \"CAUQAA\",\n" +
+                "  \"regionCode\": \"KE\",\n" +
+                "  \"pageInfo\": {\n" +
+                "    \"totalResults\": 4249,\n" +
+                "    \"resultsPerPage\": 5\n" +
+                "  },\n" +
+                "  \"items\": [\n" +
+                "    {\n" +
+                "      \"kind\": \"youtube#searchResult\",\n" +
+                "      \"etag\": \"\\\"m2yskBQFythfE4irbTIeOgYYfBU/QpOIr3QKlV5EUlzfFcVvDiJT0hw\\\"\",\n" +
+                "      \"id\": {\n" +
+                "        \"kind\": \"youtube#channel\",\n" +
+                "        \"videoId\": \"UCJowOS1R0FnhipXVqEnYU1A\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"kind\": \"youtube#searchResult\",\n" +
+                "      \"etag\": \"\\\"m2yskBQFythfE4irbTIeOgYYfBU/AWutzVOt_5p1iLVifyBdfoSTf9E\\\"\",\n" +
+                "      \"id\": {\n" +
+                "        \"kind\": \"youtube#video\",\n" +
+                "        \"videoId\": \"Eqa2nAAhHN0\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"kind\": \"youtube#searchResult\",\n" +
+                "      \"etag\": \"\\\"m2yskBQFythfE4irbTIeOgYYfBU/2dIR9BTfr7QphpBuY3hPU-h5u-4\\\"\",\n" +
+                "      \"id\": {\n" +
+                "        \"kind\": \"youtube#video\",\n" +
+                "        \"videoId\": \"IirngItQuVs\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
         String tableName = "dataTest";
         Json2SQL json2SQL = new Json2SQL(json1);
         System.out.println(json2SQL.generateCreateTableSQL(tableName));
