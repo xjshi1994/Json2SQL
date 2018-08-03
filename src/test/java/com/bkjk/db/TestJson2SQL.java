@@ -5,149 +5,19 @@ import org.junit.Test;
 @Slf4j
 public class TestJson2SQL {
     @Test
-    public static void main(String[] args) {
-        String json1 = "{\n" +
-                "\t\"asyncTaskId\": null,\n" +
-                "\t\"cisReport\": [{\n" +
-                "\t\t\"buildEndTime\": \"2018-06-24 19:07:53\",\n" +
-                "\t\t\"creditBehaviorInfo\": {\n" +
-                "\t\t\t\"avgCredits\": 0,\n" +
-                "\t\t\t\"errorMessage\": \"\",\n" +
-                "\t\t\t\"last12MthsLoanCnt\": 0,\n" +
-                "\t\t\t\"last1MthsLoanCnt\": 0,\n" +
-                "\t\t\t\"last3MthsLoanCnt\": 0,\n" +
-                "\t\t\t\"last6MthsLoanCnt\": 0,\n" +
-                "\t\t\t\"loanClosedCnt\": 0,\n" +
-                "\t\t\t\"loanNoClosedCnt\": 0,\n" +
-                "\t\t\t\"loanOrderCnt\": 0,\n" +
-                "\t\t\t\"loanOrgCnt\": 0,\n" +
-                "\t\t\t\"subReportType\": \"14238\",\n" +
-                "\t\t\t\"subReportTypeCost\": \"96043\",\n" +
-                "\t\t\t\"treatErrorCode\": null,\n" +
-                "\t\t\t\"treatResult\": \"1\",\n" +
-                "\t\t\t\"undefinedCnt\": 0\n" +
-                "\t\t},\n" +
-                "\t\t\"econnoisserurInfo\": {\n" +
-                "\t\t\t\"errorMessage\": \"\",\n" +
-                "\t\t\t\"state\": \"0\",\n" +
-                "\t\t\t\"subReportType\": \"14236\",\n" +
-                "\t\t\t\"subReportTypeCost\": \"96043\",\n" +
-                "\t\t\t\"treatErrorCode\": null,\n" +
-                "\t\t\t\"treatResult\": \"1\"\n" +
-                "\t\t},\n" +
-                "\t\t\"fraudRiskInfo\": {\n" +
-                "\t\t\t\"errorMessage\": \"\",\n" +
-                "\t\t\t\"state\": \"0\",\n" +
-                "\t\t\t\"subReportType\": \"14237\",\n" +
-                "\t\t\t\"subReportTypeCost\": \"96043\",\n" +
-                "\t\t\t\"treatErrorCode\": null,\n" +
-                "\t\t\t\"treatResult\": \"1\"\n" +
-                "\t\t},\n" +
-                "\t\t\"hasSystemError\": false,\n" +
-                "\t\t\"historySimpleQueryInfo\": {\n" +
-                "\t\t\t\"count\": {\n" +
-                "\t\t\t\t\"last12Month\": 1,\n" +
-                "\t\t\t\t\"last18Month\": 1,\n" +
-                "\t\t\t\t\"last1Month\": 0,\n" +
-                "\t\t\t\t\"last24Month\": 3,\n" +
-                "\t\t\t\t\"last3Month\": 1,\n" +
-                "\t\t\t\t\"last6Month\": 1\n" +
-                "\t\t\t},\n" +
-                "\t\t\t\"errorMessage\": \"\",\n" +
-                "\t\t\t\"items\": [{\n" +
-                "\t\t\t\t\"last12Month\": 1,\n" +
-                "\t\t\t\t\"last18Month\": 1,\n" +
-                "\t\t\t\t\"last1Month\": 0,\n" +
-                "\t\t\t\t\"last24Month\": 1,\n" +
-                "\t\t\t\t\"last3Month\": 1,\n" +
-                "\t\t\t\t\"last6Month\": 1,\n" +
-                "\t\t\t\t\"unitMember\": \"商业银行\"\n" +
-                "\t\t\t}, {\n" +
-                "\t\t\t\t\"last12Month\": 0,\n" +
-                "\t\t\t\t\"last18Month\": 0,\n" +
-                "\t\t\t\t\"last1Month\": 0,\n" +
-                "\t\t\t\t\"last24Month\": 2,\n" +
-                "\t\t\t\t\"last3Month\": 0,\n" +
-                "\t\t\t\t\"last6Month\": 0,\n" +
-                "\t\t\t\t\"unitMember\": \"消费金融公司\"\n" +
-                "\t\t\t}],\n" +
-                "\t\t\t\"subReportType\": \"19902\",\n" +
-                "\t\t\t\"subReportTypeCost\": \"96043\",\n" +
-                "\t\t\t\"suspectedBulllending\": {\n" +
-                "\t\t\t\t\"applyFinclCnt\": 0,\n" +
-                "\t\t\t\t\"applyNetLoanCnt\": 0,\n" +
-                "\t\t\t\t\"appplyCnt\": 0\n" +
-                "\t\t\t},\n" +
-                "\t\t\t\"treatErrorCode\": null,\n" +
-                "\t\t\t\"treatResult\": \"1\"\n" +
-                "\t\t},\n" +
-                "\t\t\"isFrozen\": false,\n" +
-                "\t\t\"overdueLoanInfo\": {\n" +
-                "\t\t\t\"errorMessage\": \"\",\n" +
-                "\t\t\t\"overdueDetails\": null,\n" +
-                "\t\t\t\"overdueStat\": null,\n" +
-                "\t\t\t\"subReportType\": \"14239\",\n" +
-                "\t\t\t\"subReportTypeCost\": \"96043\",\n" +
-                "\t\t\t\"treatErrorCode\": null,\n" +
-                "\t\t\t\"treatResult\": \"2\"\n" +
-                "\t\t},\n" +
-                "\t\t\"personAntiSpoofingDescInfo\": {\n" +
-                "\t\t\t\"errorMessage\": \"\",\n" +
-                "\t\t\t\"personAntiSpoofingDesc\": \"1、反欺诈风险评分为0分，风险等级为低，建议通过。\\n2、未命中羊毛党名单。\\n3、未命中欺诈风险名单。\\n4、未检测到信贷行为。\\n5、在近两年被机构查询过3次个人信息。\",\n" +
-                "\t\t\t\"subReportType\": \"14242\",\n" +
-                "\t\t\t\"subReportTypeCost\": \"96043\",\n" +
-                "\t\t\t\"treatErrorCode\": null,\n" +
-                "\t\t\t\"treatResult\": \"1\"\n" +
-                "\t\t},\n" +
-                "\t\t\"personAntiSpoofingInfo\": {\n" +
-                "\t\t\t\"errorMessage\": \"\",\n" +
-                "\t\t\t\"hitTypes\": \"被机构查询信息\",\n" +
-                "\t\t\t\"riskLevel\": \"低\",\n" +
-                "\t\t\t\"riskScore\": 0,\n" +
-                "\t\t\t\"subReportType\": \"14241\",\n" +
-                "\t\t\t\"subReportTypeCost\": \"96043\",\n" +
-                "\t\t\t\"suggest\": \"建议通过\",\n" +
-                "\t\t\t\"treatErrorCode\": null,\n" +
-                "\t\t\t\"treatResult\": \"1\"\n" +
-                "\t\t},\n" +
-                "\t\t\"personRiskInfo\": {\n" +
-                "\t\t\t\"errorMessage\": \"\",\n" +
-                "\t\t\t\"stat\": null,\n" +
-                "\t\t\t\"subReportType\": \"14227\",\n" +
-                "\t\t\t\"subReportTypeCost\": \"96043\",\n" +
-                "\t\t\t\"summary\": null,\n" +
-                "\t\t\t\"treatErrorCode\": null,\n" +
-                "\t\t\t\"treatResult\": \"2\"\n" +
-                "\t\t},\n" +
-                "\t\t\"queryConditions\": [{\n" +
-                "\t\t\t\"caption\": \"被查询者姓名\",\n" +
-                "\t\t\t\"name\": \"name\",\n" +
-                "\t\t\t\"value\": \"杨巍\"\n" +
-                "\t\t}, {\n" +
-                "\t\t\t\"caption\": \"被查询者证件号码\",\n" +
-                "\t\t\t\"name\": \"documentNo\",\n" +
-                "\t\t\t\"value\": \"130826198410031233\"\n" +
-                "\t\t}, {\n" +
-                "\t\t\t\"caption\": \"手机号码\",\n" +
-                "\t\t\t\"name\": \"phone\",\n" +
-                "\t\t\t\"value\": \"13122256419\"\n" +
-                "\t\t}],\n" +
-                "\t\t\"queryReasonID\": \"1\",\n" +
-                "\t\t\"reportID\": \"2018062419500071\",\n" +
-                "\t\t\"subReportTypes\": \"96043\",\n" +
-                "\t\t\"subReportTypesShortCaption\": \"1、个人反欺诈分析报告（96043）\",\n" +
-                "\t\t\"treatResult\": 1\n" +
-                "\t}],\n" +
-                "\t\"message\": \"查询成功\",\n" +
-                "\t\"status\": \"OK\"\n" +
-                "}";
+    public void testCreate() {
+        String json1 = "{\"asyncTaskId\":null,\"cellphone\":\"18595746721\",\"message\":\"查询成功\",\"name\":\"王鹏\",\"resultDesc\":[{\"hitDetailId\":\"5b434d803603a7000138eb6f\",\"reportTime\":\"2018-07-09 19:56:48\",\"rules\":[{\"count\":0,\"detail\":\"未命中羊毛党名单\",\"name\":\"命中羊毛党名单\",\"result\":false,\"ruleId\":\"pycredit_econnoisserur_state\",\"score\":null},{\"count\":0,\"detail\":\"未命中欺诈风险名单\",\"name\":\"命中欺诈风险名单\",\"result\":false,\"ruleId\":\"pycredit_fraudRisk_state\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_未知总笔数:0\",\"name\":\"信贷行为_未知总笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_undefinedCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_近12个月贷款放款笔数:0\",\"name\":\"信贷行为_近12个月贷款放款笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_last12MthsLoanCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_贷款总笔数:0\",\"name\":\"信贷行为_贷款总笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_loanOrderCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_未结清笔数:0\",\"name\":\"信贷行为_未结清笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_loanNoClosedCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_已结清笔数:0\",\"name\":\"信贷行为_已结清笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_loanClosedCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_近1个月贷款放款笔数:0\",\"name\":\"信贷行为_近1个月贷款放款笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_last1MthsLoanCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_贷款机构总数:0\",\"name\":\"信贷行为_贷款机构总数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_loanOrgCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_近3个月贷款放款笔数:0\",\"name\":\"信贷行为_近3个月贷款放款笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_last3MthsLoanCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_近6个月贷款放款笔数:0\",\"name\":\"信贷行为_近6个月贷款放款笔数\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_last6MthsLoanCnt\",\"score\":null},{\"count\":0,\"detail\":\"信贷行为_平均放款额度:0\",\"name\":\"信贷行为_平均放款额度\",\"result\":false,\"ruleId\":\"pycredit_creditBehaviorInfo_avgCredits\",\"score\":null},{\"count\":2,\"detail\":\"近两年历史查询记录_近1个月各单位类型查询记录总数:2\",\"name\":\"近两年历史查询记录_近1个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last1Month\",\"score\":null},{\"count\":4,\"detail\":\"近两年历史查询记录_近24个月各单位类型查询记录总数:4\",\"name\":\"近两年历史查询记录_近24个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last24Month\",\"score\":null},{\"count\":2,\"detail\":\"近两年历史查询记录_近3个月各单位类型查询记录总数:2\",\"name\":\"近两年历史查询记录_近3个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last3Month\",\"score\":null},{\"count\":4,\"detail\":\"近两年历史查询记录_近12个月各单位类型查询记录总数:4\",\"name\":\"近两年历史查询记录_近12个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last12Month\",\"score\":null},{\"count\":3,\"detail\":\"近两年历史查询记录_近6个月各单位类型查询记录总数:3\",\"name\":\"近两年历史查询记录_近6个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last6Month\",\"score\":null},{\"count\":4,\"detail\":\"近两年历史查询记录_近18个月各单位类型查询记录总数:4\",\"name\":\"近两年历史查询记录_近18个月各单位类型查询记录总数\",\"result\":true,\"ruleId\":\"pycredit_historySimpleQueryCount_last18Month\",\"score\":null},{\"count\":0,\"detail\":\"近两年历史查询记录_疑似多头记录:0\",\"name\":\"近两年历史查询记录_疑似多头记录\",\"result\":false,\"ruleId\":\"pycredit_suspectedBulllending_appplyCnt\",\"score\":null}],\"score\":20,\"source\":\"PYCREDIT\",\"sourceName\":\"鹏元\",\"suggest\":\"建议通过\"},{\"hitDetailId\":\"5b434d7f7bca2c000164e35e\",\"reportTime\":\"2018-07-09 19:56:47\",\"rules\":[{\"count\":2,\"detail\":\"3个月身份证关联手机号数：2\",\"name\":\"3个月内身份证关联多个申请信息\",\"result\":true,\"ruleId\":\"ssn_bind_multiple_apply_info_in3m\",\"score\":6},{\"count\":3,\"detail\":\"一般消费分期平台;大型消费金融公司;综合类电商平台\",\"name\":\"1个月内申请人在多个平台申请借款\",\"result\":true,\"ruleId\":\"applicant_applied_loan_on_multiple_platforms_in1m\",\"score\":6},{\"count\":4,\"detail\":\"一般消费分期平台;大型消费金融公司;O2O;综合类电商平台\",\"name\":\"3个月内申请人在多个平台申请借款\",\"result\":true,\"ruleId\":\"applicant_applied_loan_on_multiple_platforms_in3m\",\"score\":4},{\"count\":1,\"detail\":\"异常借款\",\"name\":\"申请人信息命中低风险关注名单\",\"result\":true,\"ruleId\":null,\"score\":2}],\"score\":18,\"source\":\"TONGDUN\",\"sourceName\":\"同盾\",\"suggest\":\"建议通过\"}],\"source\":[\"PYCREDIT\",\"TONGDUN\"],\"ssn\":\"411123199603149532\",\"status\":\"OK\"}";
+        String tableName = "dataTest";
         Json2SQL json2SQL = new Json2SQL(json1);
-         // variable table name
-        //log.info(json2SQL.generateCreateTableSQL("tongdun"));
-        //log.info(json2SQL.generateInsertSQL("tongdun"));
-        log.info(json2SQL.generateCreateTableSQL("tongdun"));
-        log.info(json2SQL.generateInsertSQL("tongdun"));
-        System.out.println(json2SQL.generateCreateTableSQL("tongdun"));
-        System.out.println(json2SQL.generateInsertSQL("tongdun"));
+        System.out.println(json2SQL.generateCreateTableSQL(tableName));
+        System.out.println(json2SQL.generateInsertSQL(tableName));
+    }
+    @Test
+    public void testFunc() {
+        String firstKey = "attrs.author[0]";
+        if (firstKey.endsWith("]")) {
+            firstKey = firstKey + "." +UtilTools.removeBracket(UtilTools.getLastField(firstKey));
+        }
+        System.out.println(firstKey);
     }
 }

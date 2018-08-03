@@ -13,28 +13,40 @@ public class Json2SQL {
   private final String json;
   private Map<String, Map<String, Map<String, Object>>> group;
   private SQLGenerator sqlGenerator;
+  private boolean isInit = false;
   public Json2SQL(String json) {
     this.json = json;
   }
 
-  public String generateCreateTableSQL(String tableName) {
-      if (json==null) {
-        throw new RuntimeException("json is null!");
+  private void sqlInit() {
+    if (json == null) {
+      throw new RuntimeException("json is null!");
+    } else {
+      Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(json);
+      getThreeMap(flattenJson);
+      if (group != null) {
+        Map<String, List<Object>> dataframe = insertData();
+        sqlGenerator = new SQLGenerator(dataframe, totalRow);
       } else {
-        Map<String, Object> flattenJson = JsonFlattener.flattenAsMap(json);
-        getThreeMap(flattenJson);
-        if (group != null) {
-          Map<String, List<Object>> dataframe = insertData();
-          sqlGenerator = new SQLGenerator(dataframe, totalRow);
-        } else {
-          throw new RuntimeException("group is null!");
-        }
-        return sqlGenerator.getCreateSQL(tableName);
+        throw new RuntimeException("group is null!");
       }
+    }
+  }
+
+  public String generateCreateTableSQL(String tableName) {
+    if (!isInit) {
+      sqlInit();
+      isInit = true;
+    }
+    return sqlGenerator.getCreateSQL(tableName);
   }
 
   public String generateInsertSQL(String tableName) {
-      return sqlGenerator.getFinalInsert(tableName);
+    if (!isInit) {
+      sqlInit();
+      isInit = true;
+    }
+    return sqlGenerator.getFinalInsert(tableName);
   }
 
   // step 1
@@ -45,19 +57,25 @@ public class Json2SQL {
     Map<String, Map<String, Map<String, Object>>> grouped = new HashMap<>();
 
     for (Map.Entry<String, Object> entry : flattenJson.entrySet()) {
-      String firstKey = UtilTools.getPreForKey(entry.getKey());
+      String key = entry.getKey();
+      if (key.endsWith("]")) {
+        key = key + "." +UtilTools.removeBracket(UtilTools.getLastField(key));
+      }
+
+      String firstKey = UtilTools.getPreForKey(key);
 
       grouped.putIfAbsent(firstKey, new HashMap<>());
 
       // second level map
       Map<String, Map<String, Object>> secondMap = grouped.get(firstKey);
-      String secondKey = UtilTools.removeLast(entry.getKey());
+      String secondKey = UtilTools.removeLast(key);
       secondMap.putIfAbsent(secondKey, new HashMap<>());
 
       // third level map
-      String thirdKey = UtilTools.getLastField(entry.getKey());
+      String thirdKey = UtilTools.getLastField(key);
       Map<String, Object> thirdMap = secondMap.get(secondKey);
       thirdMap.put(thirdKey, entry.getValue());
+
     }
     // assign the value
     this.group = grouped;
@@ -122,6 +140,7 @@ public class Json2SQL {
     for (Map.Entry<String, Map<String, Object>> secondEntry : secondMap.entrySet()) {
       // curKey with bracket
       String curKey = secondEntry.getKey();
+
       while (curKey != null) {
         Map<String, Object> thirdMap = getThirdMap(curKey);
 
@@ -133,15 +152,12 @@ public class Json2SQL {
             subMap.putIfAbsent(column, new LinkedList<>());
             subMap.get(column).add(thirdEntry.getValue());
           }
-
-          // get all its parent from bottom
-          if (curKey.contains(".")) {
-            curKey = UtilTools.removeLast(curKey);
-          } else {
-            curKey = null;
-          }
+        }
+        // get all its parent from bottom
+        if (curKey.contains(".")) {
+          curKey = UtilTools.removeLast(curKey);
         } else {
-          throw new RuntimeException("thirdmap is null");
+          curKey = null;
         }
       }
     }
@@ -206,6 +222,10 @@ public class Json2SQL {
 
   private Map<String, Object> getThirdMap(String secondKey) {
     String firstKey = UtilTools.removeBracket(secondKey);
+    Map<String, Map<String, Object>> secondMap = group.get(firstKey);
+    if (secondMap==null) {
+      return null;
+    }
     return group.get(firstKey).get(secondKey);
   }
 
