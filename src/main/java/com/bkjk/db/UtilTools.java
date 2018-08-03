@@ -17,7 +17,6 @@ public class UtilTools {
         return str;
     }
 
-
     public static String rmOutBracket(String str) {
         return str.replaceAll("\\[|\\]", "");
     }
@@ -46,6 +45,7 @@ public class UtilTools {
             return entryKey + "." + thirdEntryKey;
         }
     }
+
     public static String removeLastCommma(String str) {
         return str.substring(0, str.length() - 1);
     }
