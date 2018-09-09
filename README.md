@@ -14,7 +14,7 @@
 * this cannot handle with the null array. 
 
 ## 注意事项
-* data.log contains mannual things to do.
-* schema type 为<stub> 需要手动修改
-* data有可能超过varchar(1000),改成text
-* column name过长， 手动删减
+* data.log contains manual things to do.
+* schema type which <stub> need manual revise.
+* length of data which longer than varchar(1000),needed to be changed to text
+* column name may exceed the legit length of MySQL, so it should be manually decreased.
