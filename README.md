@@ -13,7 +13,7 @@
 ## TODO
 * this cannot handle with the null array. 
 
-## 注意事项
+## Tips
 * data.log contains manual things to do.
 * schema type which <stub> need manual revise.
 * length of data which longer than varchar(1000),needed to be changed to text
